@@ -11,7 +11,7 @@ public class Cliente {
         DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
         DataInputStream entrada = new DataInputStream(socket.getInputStream());
 
-        Janela janela = new Janela(socket, saida); // Passa o socket e a stream de saída para a janela
+        Janela janela = new Janela(socket, saida, entrada); // Passa o socket e a stream de saída para a janela
         janela.setVisible(true);
 
         // Não fecha o socket aqui; ele será fechado quando o botão "Sair" for pressionado

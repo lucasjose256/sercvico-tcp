@@ -18,7 +18,9 @@ class ThreadSockets extends Thread {
         System.out.println("Conectado");
 
         try {
+            System.out.println("Passou");
             DataInputStream entrada = new DataInputStream(socket.getInputStream()); // Cria um fluxo de entrada de dados a partir do socket.
+            while(true){
             String nomeArquivo = entrada.readUTF(); // Lê o nome do arquivo do fluxo de entrada.
 
             // Verifica se o arquivo existe na pasta do servidor
@@ -48,17 +50,19 @@ class ThreadSockets extends Thread {
                         + "\n" + "Status: ok");
 
 
-                saida.close();
-            } else {
+            } else if (entrada.readUTF() == "-1") {
+                entrada.close();
+                socket.close();
+
+            }
+            else {
                 System.out.println("Nao Existe");
                 // Arquivo não encontrado
                 DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
                 saida.writeUTF("Status: arquivo inexistente");
-                saida.close();
-            }
+                //saida.close();
+            }}
 
-            entrada.close();
-            socket.close();
         } catch (Exception e) {
             e.printStackTrace(); // Trata qualquer exceção lançada durante o processo e imprime o rastreamento da pilha.
         }

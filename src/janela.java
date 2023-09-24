@@ -16,11 +16,14 @@ class Janela extends JFrame {
     private boolean conexao;
     private boolean arquivoRecebido;
     private DataOutputStream saida;
+
+    private DataInputStream entrada;
     private Socket socket;
 
-    public Janela(Socket socket, DataOutputStream saida) {
+    public Janela(Socket socket, DataOutputStream saida, DataInputStream entrada) {
         this.socket = socket;
         this.saida = saida;
+        this.entrada = entrada;
 
         conexao = true;
         arquivoRecebido = false;
@@ -62,7 +65,7 @@ class Janela extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 conexao = false;
                 try {
-                    saida.writeUTF("Sair"); // Informa ao servidor que o cliente está saindo
+                    saida.writeUTF("-1"); // Informa ao servidor que o cliente está saindo
                     saida.close();
                     socket.close();
                 } catch (IOException ex) {
@@ -96,7 +99,6 @@ class Janela extends JFrame {
         try {
             saida.writeUTF(nomeArquivo);
             saida.flush();
-            DataInputStream entrada= new DataInputStream(socket.getInputStream());
             String info = entrada.readUTF();
             displayFileInformation(info);
         } catch (IOException e) {
