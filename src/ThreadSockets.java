@@ -46,8 +46,8 @@ class ThreadSockets extends Thread {
                 DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
                 saida.writeUTF("Nome do arquivo: " + nomeDoArquivo +
                         "\n" + "Tamanho: " + tamanhoDoArquivo + " bytes"
-                        + "\n" + "Hash: " + hashDoArquivo + "\n" + "Dados: " + dadosDoArquivo
-                        + "\n" + "Status: ok");
+                        + "\n" + "Hash: " + hashDoArquivo + "\n" + "Status: ok" + "\n" + "Dados: " + dadosDoArquivo
+                        );
 
 
             } else if (entrada.readUTF() == "-1") {

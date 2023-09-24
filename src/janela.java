@@ -2,9 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 class Janela extends JFrame {
@@ -101,8 +99,28 @@ class Janela extends JFrame {
             saida.flush();
             String info = entrada.readUTF();
             displayFileInformation(info);
+            saveDataToFile(info, ("Gravacao" + nomeArquivo));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void saveDataToFile(String input, String filename) throws IOException {
+        // Encontre a última aparição de "Dados: " na string
+        int lastIndex = input.lastIndexOf("Dados: ");
+
+        if (lastIndex != -1) {
+            // Pegue os dados após a última aparição de "Dados: "
+            String dados = input.substring(lastIndex + "Dados: ".length());
+
+            // Grave os dados em um arquivo
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+                writer.write(dados);
+            }
+
+            System.out.println("Dados gravados com sucesso em " + filename);
+        } else {
+            System.out.println("String não contém a marca 'Dados: '.");
         }
     }
 }
