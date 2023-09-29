@@ -63,7 +63,7 @@ class Janela extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 conexao = false;
                 try {
-                    saida.writeUTF("-1"); // Informa ao servidor que o cliente está saindo
+                    saida.writeUTF("-1");
                     saida.close();
                     socket.close();
                 } catch (IOException ex) {
@@ -77,17 +77,8 @@ class Janela extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public boolean isConnected() {
-        return conexao;
-    }
 
-    public boolean hasReceivedFile() {
-        return arquivoRecebido;
-    }
 
-    public void setFileReceived(boolean received) {
-        arquivoRecebido = received;
-    }
 
     public void displayFileInformation(String info) {
         infoArquivoArea.setText(info);
@@ -98,7 +89,9 @@ class Janela extends JFrame {
             saida.writeUTF(nomeArquivo);
             saida.flush();
             String info = entrada.readUTF();
+            System.out.println(info);
             displayFileInformation(info);
+            if (info != "Status: arquivo inexistente")
             saveDataToFile(info, ("Gravacao" + nomeArquivo));
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,14 +99,11 @@ class Janela extends JFrame {
     }
 
     public void saveDataToFile(String input, String filename) throws IOException {
-        // Encontre a última aparição de "Dados: " na string
         int lastIndex = input.lastIndexOf("Dados: ");
 
         if (lastIndex != -1) {
-            // Pegue os dados após a última aparição de "Dados: "
             String dados = input.substring(lastIndex + "Dados: ".length());
 
-            // Grave os dados em um arquivo
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
                 writer.write(dados);
             }

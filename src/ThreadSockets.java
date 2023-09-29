@@ -14,24 +14,22 @@ class ThreadSockets extends Thread {
     @Override
     public void run() {
         super.run();
-        System.out.println(Thread.currentThread().getName()); // Imprime o nome da thread atual.
+        System.out.println(Thread.currentThread().getName());
         System.out.println("Conectado");
 
         try {
             System.out.println("Passou");
-            DataInputStream entrada = new DataInputStream(socket.getInputStream()); // Cria um fluxo de entrada de dados a partir do socket.
+            DataInputStream entrada = new DataInputStream(socket.getInputStream());
             while(true){
-            String nomeArquivo = entrada.readUTF(); // Lê o nome do arquivo do fluxo de entrada.
+            String nomeArquivo = entrada.readUTF();
 
-            // Verifica se o arquivo existe na pasta do servidor
+
             String pastaDoServidor = "C:/Users/Rodrigo/IdeaProjects/sercvico-tcp/";
             String caminhoDoArquivo = pastaDoServidor + nomeArquivo;
 
-
-            File arquivo = new File(caminhoDoArquivo);
-            if (arquivo.exists() && arquivo.isFile()) {
+            File arquivo = new File(caminhoDoArquivo);;
+            if (arquivo.exists()) {
                 System.out.println("Existe");
-                // Arquivo encontrado, fornecer informações sobre o arquivo
                 String nomeDoArquivo = arquivo.getName();
                 long tamanhoDoArquivo = arquivo.length();
                 String hashDoArquivo = calcularHash(arquivo);
@@ -40,9 +38,7 @@ class ThreadSockets extends Thread {
                 System.out.println(nomeDoArquivo);
                 System.out.println(tamanhoDoArquivo);
                 System.out.println(hashDoArquivo);
-                System.out.println(dadosDoArquivo);
 
-                // Enviar informações do arquivo para o cliente
                 DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
                 saida.writeUTF("Nome do arquivo: " + nomeDoArquivo +
                         "\n" + "Tamanho: " + tamanhoDoArquivo + " bytes"
@@ -50,21 +46,23 @@ class ThreadSockets extends Thread {
                         );
 
 
-            } else if (entrada.readUTF() == "-1") {
+            } else if (nomeArquivo == "-1") {
+
+                System.out.println("Saiu");
                 entrada.close();
                 socket.close();
 
             }
             else {
                 System.out.println("Nao Existe");
-                // Arquivo não encontrado
+
                 DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
                 saida.writeUTF("Status: arquivo inexistente");
-                //saida.close();
+
             }}
 
         } catch (Exception e) {
-            e.printStackTrace(); // Trata qualquer exceção lançada durante o processo e imprime o rastreamento da pilha.
+            e.printStackTrace();
         }
     }
 
