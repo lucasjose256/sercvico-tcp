@@ -21,45 +21,45 @@ class ThreadSockets extends Thread {
             System.out.println("Passou");
             DataInputStream entrada = new DataInputStream(socket.getInputStream());
             while(true){
-            String nomeArquivo = entrada.readUTF();
+                String nomeArquivo = entrada.readUTF();
 
 
-            String pastaDoServidor = "C:/Users/Rodrigo/IdeaProjects/sercvico-tcp/";
-            String caminhoDoArquivo = pastaDoServidor + nomeArquivo;
+                String pastaDoServidor = "C:/Users/Rodrigo/IdeaProjects/sercvico-tcp/";
+                String caminhoDoArquivo = pastaDoServidor + nomeArquivo;
 
-            File arquivo = new File(caminhoDoArquivo);;
-            if (arquivo.exists()) {
-                System.out.println("Existe");
-                String nomeDoArquivo = arquivo.getName();
-                long tamanhoDoArquivo = arquivo.length();
-                String hashDoArquivo = calcularHash(arquivo);
-                String dadosDoArquivo = lerArquivo(arquivo);
+                File arquivo = new File(caminhoDoArquivo);;
+                if (arquivo.exists()) {
+                    System.out.println("Existe");
+                    String nomeDoArquivo = arquivo.getName();
+                    long tamanhoDoArquivo = arquivo.length();
+                    String hashDoArquivo = calcularHash(arquivo);
+                    String dadosDoArquivo = lerArquivo(arquivo);
 
-                System.out.println(nomeDoArquivo);
-                System.out.println(tamanhoDoArquivo);
-                System.out.println(hashDoArquivo);
+                    System.out.println(nomeDoArquivo);
+                    System.out.println(tamanhoDoArquivo);
+                    System.out.println(hashDoArquivo);
 
-                DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
-                saida.writeUTF("Nome do arquivo: " + nomeDoArquivo +
-                        "\n" + "Tamanho: " + tamanhoDoArquivo + " bytes"
-                        + "\n" + "Hash: " + hashDoArquivo + "\n" + "Status: ok" + "\n" + "Dados: " + dadosDoArquivo
-                        );
+                    DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
+                    saida.writeUTF("Nome do arquivo: " + nomeDoArquivo +
+                            "\n" + "Tamanho: " + tamanhoDoArquivo + " bytes"
+                            + "\n" + "Hash: " + hashDoArquivo + "\n" + "Status: ok" + "\n" + "Dados: " + dadosDoArquivo
+                    );
 
 
-            } else if (nomeArquivo == "-1") {
+                } else if (nomeArquivo == "-1") {
 
-                System.out.println("Saiu");
-                entrada.close();
-                socket.close();
+                    System.out.println("Saiu");
+                    entrada.close();
+                    socket.close();
 
-            }
-            else {
-                System.out.println("Nao Existe");
+                }
+                else {
+                    System.out.println("Nao Existe");
 
-                DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
-                saida.writeUTF("Status: arquivo inexistente");
+                    DataOutputStream saida = new DataOutputStream(socket.getOutputStream());
+                    saida.writeUTF("Status: arquivo inexistente");
 
-            }}
+                }}
 
         } catch (Exception e) {
             e.printStackTrace();
