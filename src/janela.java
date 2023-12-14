@@ -120,16 +120,13 @@ class Janela extends JFrame {
         String fileName = nomeArquivo;
         byte[] fileNameBytes = fileName.getBytes();
 
-        // Create a DatagramPacket to send the file name to the server
         DatagramPacket sendPacket = new DatagramPacket(fileNameBytes, fileNameBytes.length, serverAddress, serverPort);
         socket.send(sendPacket);
 
-        // Receive the response from the server
         byte[] receiveBuffer = new byte[1024];
         DatagramPacket receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
         socket.receive(receivePacket);
 
-        // Convert the received data to a string and print it
         String response = new String(receivePacket.getData(), 0, receivePacket.getLength());
         System.out.println("Response from server: " + response);
         if(response.contains("arquivo inexistente")) {
@@ -191,7 +188,7 @@ class Janela extends JFrame {
             sequence = sequence.substring(0, sequence.length() - 1);
             String sinal = "-1";
             socket = new DatagramSocket();
-            socket.setSoTimeout(10000);
+            socket.setSoTimeout(4000);
             byte[] byt = sinal.getBytes();
             sendPacket = new DatagramPacket(byt, byt.length, serverAddress, serverPort);
             socket.send(sendPacket);

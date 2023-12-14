@@ -81,7 +81,7 @@ public class Servidor {
                 Thread.sleep(10);
             }
             Path path = Path.of("teste.png");
-            Files.write(path, fileData, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            //Files.write(path, fileData, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         }
         catch (Exception e){return;}
     }
@@ -89,7 +89,7 @@ public class Servidor {
 
     private static void sendFileToClient(DatagramSocket socket, InetAddress clientAddress, int clientPort, String fileName)
             throws IOException, NoSuchAlgorithmException {
-        String pastaDoServidor = "C:/Users/Rodrigo/IdeaProjects/sercvico-tcp/";
+        String pastaDoServidor = "C:/Users/Rodrigo/IdeaProjects/sercvico-udp/";
         String caminhoDoArquivo = pastaDoServidor + fileName;
 
         File arquivo = new File(caminhoDoArquivo);
